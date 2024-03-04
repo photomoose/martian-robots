@@ -68,6 +68,21 @@ export class Robot {
         this.position.orientation = 'S';
         break;
       }
+    } else if (instruction === 'F') {
+      switch (this.position.orientation) {
+      case 'N':
+        this.position.y = this.position.y + 1;
+        break;
+      case 'E':
+        this.position.x++;
+        break;
+      case 'S':
+        this.position.y--;
+        break;
+      case 'W':
+        this.position.x--;
+        break;
+      }
     }
   }
 }
