@@ -38,19 +38,36 @@ export class Robot {
   }
 
   public handleInstruction(instruction: string) {
-    switch (this.position.orientation) {
-    case 'N':
-      this.position.orientation = 'E';
-      break;
-    case 'E':
-      this.position.orientation = 'S';
-      break;
-    case 'S':
-      this.position.orientation = 'W';
-      break;
-    case 'W':
-      this.position.orientation = 'N';
-      break;
+    if (instruction === 'R') {
+      switch (this.position.orientation) {
+      case 'N':
+        this.position.orientation = 'E';
+        break;
+      case 'E':
+        this.position.orientation = 'S';
+        break;
+      case 'S':
+        this.position.orientation = 'W';
+        break;
+      case 'W':
+        this.position.orientation = 'N';
+        break;
+      }
+    } else if (instruction === 'L') {
+      switch (this.position.orientation) {
+      case 'N':
+        this.position.orientation = 'W';
+        break;
+      case 'E':
+        this.position.orientation = 'N';
+        break;
+      case 'S':
+        this.position.orientation = 'E';
+        break;
+      case 'W':
+        this.position.orientation = 'S';
+        break;
+      }
     }
   }
 }
