@@ -45,4 +45,15 @@ describe('Robot', () => {
     robot.handleInstruction('R');
     expect(robot.getPosition()).toBe(expected);
   });
+
+  it.each([
+    ['1 1 N', '1 1 W'],
+    ['1 1 E', '1 1 N'],
+    ['1 1 S', '1 1 E'],
+    ['1 1 W', '1 1 S'],
+  ])('should rotate 90 degrees to the left when handling L command (%s)', (position: string, expected: string) => {
+    robot.setPosition(position);
+    robot.handleInstruction('L');
+    expect(robot.getPosition()).toBe(expected);
+  });
 });
