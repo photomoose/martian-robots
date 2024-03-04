@@ -56,4 +56,15 @@ describe('Robot', () => {
     robot.handleInstruction('L');
     expect(robot.getPosition()).toBe(expected);
   });
+
+  it.each([
+    ['1 1 N', '1 2 N'],
+    ['1 1 E', '2 1 E'],
+    ['1 1 S', '1 0 S'],
+    ['1 1 W', '0 1 W'],
+  ])('should move one grid point in the direction of orientation when handling F command (%s)', (position: string, expected: string) => {
+    robot.setPosition(position);
+    robot.handleInstruction('F');
+    expect(robot.getPosition()).toBe(expected);
+  });
 });
