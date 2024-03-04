@@ -1,12 +1,12 @@
 export class Mars {
 
-  private constructor(private x: number, private y: number) {}
+  private constructor(private upperRight: Coordinate) {}
 
-  public static create(x: number, y: number) {
-    if (x < 1 || x > 50 || y < 1 || y > 50) {
-      throw new Error('Invalid coordinates. Valid coordinates range from 1 to 50.');
+  public static create(upperRight: Coordinate) {
+    if (upperRight.x < 1 || upperRight.x > 50 || upperRight.y < 1 || upperRight.y > 50) {
+      throw new Error('Invalid upper-right coordinates. Valid coordinates range from 1 to 50.');
     }
 
-    return new Mars(x, y);
+    return new Mars(upperRight);
   }
 }
