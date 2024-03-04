@@ -26,4 +26,6 @@ export class Robot {
 
     this.position = position;
   }
+
+  public handleInstruction(instruction: string) {}
 }

@@ -34,4 +34,15 @@ describe('Robot', () => {
     robot.setPosition(position);
     expect(robot.getPosition()).toBe(position);
   });
+
+  it.each([
+    ['1 1 N', '1 1 E'],
+    ['1 1 E', '1 1 S'],
+    ['1 1 S', '1 1 W'],
+    ['1 1 W', '1 1 N'],
+  ])('should rotate 90 degrees to the right when handling R command (%s)', (position: string, expected: string) => {
+    robot.setPosition(position);
+    robot.handleInstruction('R');
+    expect(robot.getPosition()).toBe(expected);
+  });
 });
