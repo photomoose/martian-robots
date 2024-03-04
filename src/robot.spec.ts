@@ -42,7 +42,7 @@ describe('Robot', () => {
     ['1 1 W', '1 1 N'],
   ])('should rotate 90 degrees to the right when handling R command (%s)', (position: string, expected: string) => {
     robot.setPosition(position);
-    robot.handleInstruction('R');
+    robot.handleInstructions('R');
     expect(robot.getPosition()).toBe(expected);
   });
 
@@ -53,7 +53,7 @@ describe('Robot', () => {
     ['1 1 W', '1 1 S'],
   ])('should rotate 90 degrees to the left when handling L command (%s)', (position: string, expected: string) => {
     robot.setPosition(position);
-    robot.handleInstruction('L');
+    robot.handleInstructions('L');
     expect(robot.getPosition()).toBe(expected);
   });
 
@@ -64,7 +64,13 @@ describe('Robot', () => {
     ['1 1 W', '0 1 W'],
   ])('should move one grid point in the direction of orientation when handling F command (%s)', (position: string, expected: string) => {
     robot.setPosition(position);
-    robot.handleInstruction('F');
+    robot.handleInstructions('F');
     expect(robot.getPosition()).toBe(expected);
+  });
+
+  it('should handle multiple instructions', () => {
+    robot.setPosition('1 1 E');
+    robot.handleInstructions('RFRFRFRF');
+    expect(robot.getPosition()).toBe('1 1 E');
   });
 });

@@ -37,51 +37,53 @@ export class Robot {
     };
   }
 
-  public handleInstruction(instruction: string) {
-    if (instruction === 'R') {
-      switch (this.position.orientation) {
-      case 'N':
-        this.position.orientation = 'E';
-        break;
-      case 'E':
-        this.position.orientation = 'S';
-        break;
-      case 'S':
-        this.position.orientation = 'W';
-        break;
-      case 'W':
-        this.position.orientation = 'N';
-        break;
-      }
-    } else if (instruction === 'L') {
-      switch (this.position.orientation) {
-      case 'N':
-        this.position.orientation = 'W';
-        break;
-      case 'E':
-        this.position.orientation = 'N';
-        break;
-      case 'S':
-        this.position.orientation = 'E';
-        break;
-      case 'W':
-        this.position.orientation = 'S';
-        break;
-      }
-    } else if (instruction === 'F') {
-      switch (this.position.orientation) {
-      case 'N':
-        this.position.y = this.position.y + 1;
-        break;
-      case 'E':
-        this.position.x++;
-        break;
-      case 'S':
-        this.position.y--;
-        break;
-      case 'W':
-        this.position.x--;
-        break;
+  public handleInstructions(instructions: string) {
+    for (const instruction of instructions) {
+      if (instruction === 'R') {
+        switch (this.position.orientation) {
+        case 'N':
+          this.position.orientation = 'E';
+          break;
+        case 'E':
+          this.position.orientation = 'S';
+          break;
+        case 'S':
+          this.position.orientation = 'W';
+          break;
+        case 'W':
+          this.position.orientation = 'N';
+          break;
+        }
+      } else if (instruction === 'L') {
+        switch (this.position.orientation) {
+        case 'N':
+          this.position.orientation = 'W';
+          break;
+        case 'E':
+          this.position.orientation = 'N';
+          break;
+        case 'S':
+          this.position.orientation = 'E';
+          break;
+        case 'W':
+          this.position.orientation = 'S';
+          break;
+        }
+      } else if (instruction === 'F') {
+        switch (this.position.orientation) {
+        case 'N':
+          this.position.y = this.position.y + 1;
+          break;
+        case 'E':
+          this.position.x++;
+          break;
+        case 'S':
+          this.position.y--;
+          break;
+        case 'W':
+          this.position.x--;
+          break;
+        }
       }
     }
   }
