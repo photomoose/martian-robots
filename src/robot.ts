@@ -1,5 +1,5 @@
 export class Robot {
   public getPosition() {
-    return '';
+    return '0 0 N';
   }
 }
