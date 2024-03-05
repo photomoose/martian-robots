@@ -45,6 +45,11 @@ export class Robot {
     }
 
     for (const instruction of instructions) {
+      if (this.isLost) {
+        // Silently ignore further instructions if lost
+        return;
+      }
+
       if (instruction === 'R') {
         switch (this.position.orientation) {
         case 'N':
