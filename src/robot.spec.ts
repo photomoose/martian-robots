@@ -44,7 +44,7 @@ describe('Robot', () => {
     ['1 1 W', '1 1 N'],
   ])('should rotate 90 degrees to the right when handling R command (%s)', (position: string, expected: string) => {
     robot.setPosition(position);
-    robot.handleInstructions('R');
+    robot.processInstructions('R');
     expect(robot.getPosition()).toBe(expected);
   });
 
@@ -55,7 +55,7 @@ describe('Robot', () => {
     ['1 1 W', '1 1 S'],
   ])('should rotate 90 degrees to the left when handling L command (%s)', (position: string, expected: string) => {
     robot.setPosition(position);
-    robot.handleInstructions('L');
+    robot.processInstructions('L');
     expect(robot.getPosition()).toBe(expected);
   });
 
@@ -66,25 +66,25 @@ describe('Robot', () => {
     ['1 1 W', '0 1 W'],
   ])('should move one grid point in the direction of orientation when handling F command (%s)', (position: string, expected: string) => {
     robot.setPosition(position);
-    robot.handleInstructions('F');
+    robot.processInstructions('F');
     expect(robot.getPosition()).toBe(expected);
   });
 
   it('should handle multiple instructions', () => {
     robot.setPosition('1 1 E');
-    robot.handleInstructions('RFRFRFRF');
+    robot.processInstructions('RFRFRFRF');
     expect(robot.getPosition()).toBe('1 1 E');
   });
 
   it('should throw for instruction strings having length of 100 or more characters', () => {
     expect(() => {
-      robot.handleInstructions('R'.repeat(100));
+      robot.processInstructions('R'.repeat(100));
     }).toThrow('Invalid instruction length. Instruction strings must be less than 100 characters.');
   });
 
   it('should throw for unsupported instruction', () => {
     expect(() => {
-      robot.handleInstructions('X');
+      robot.processInstructions('X');
     }).toThrow('Instruction string contains unsupported instruction.');
   });
 
@@ -95,7 +95,7 @@ describe('Robot', () => {
     '0 0 W'
   ])('should be LOST when instructions make it fall off Mars (%s)', (position: string) => {
     robot.setPosition(position);
-    robot.handleInstructions('F');
+    robot.processInstructions('F');
     expect(robot.getPosition()).toBe(`${position} LOST`);
   });
 });

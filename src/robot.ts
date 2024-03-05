@@ -39,7 +39,7 @@ export class Robot {
     };
   }
 
-  public handleInstructions(instructions: string) {
+  public processInstructions(instructions: string) {
     if (instructions.length >= 100) {
       throw new Error('Invalid instruction length. Instruction strings must be less than 100 characters.');
     }
