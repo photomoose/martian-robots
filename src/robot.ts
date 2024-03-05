@@ -114,8 +114,13 @@ export class Robot {
           break;
         }
 
-        if (this.mars.isOutOfBounds(newPosition)){
+        if (this.mars.isOutOfBounds(newPosition) && this.mars.hasScent(this.position)) {
+          continue;
+        }
+
+        if (this.mars.isOutOfBounds(newPosition)) {
           this.isLost = true;
+          this.mars.leaveScent(this.position);
         } else {
           this.position = newPosition;
         }

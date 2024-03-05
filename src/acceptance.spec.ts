@@ -3,7 +3,6 @@ import {Robot} from './robot';
 
 describe('Acceptance tests', () => {
   let mars: Mars;
-  let output: string;
 
   beforeEach(() => {
     mars = Mars.create({ x: 5, y: 3 });
@@ -45,7 +44,7 @@ describe('Acceptance tests', () => {
         });
 
         it('the robot\'s position should be 2 3 S', () => {
-          expect(output).toBe('2 3 S');
+          expect(robot3.getPosition()).toBe('2 3 S');
         });
       });
     });
