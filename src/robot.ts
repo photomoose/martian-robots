@@ -76,29 +76,43 @@ export class Robot {
           break;
         }
       } else if (instruction === 'F') {
+
+        let newPosition = {
+          ...this.position
+        };
+
         switch (this.position.orientation) {
         case 'N':
-          const newPosition = {
+          newPosition = {
             ...this.position,
             y: this.position.y + 1
           };
-
-          if (this.mars.isOutOfBounds(newPosition)){
-            this.isLost = true;
-          } else {
-            this.position = newPosition;
-          }
-
           break;
+
         case 'E':
-          this.position.x++;
+          newPosition = {
+            ...this.position,
+            x: this.position.x + 1
+          };
           break;
         case 'S':
-          this.position.y--;
+          newPosition = {
+            ...this.position,
+            y: this.position.y - 1
+          };
           break;
         case 'W':
-          this.position.x--;
+          newPosition = {
+            ...this.position,
+            x: this.position.x - 1
+          };
           break;
+        }
+
+        if (this.mars.isOutOfBounds(newPosition)){
+          this.isLost = true;
+        } else {
+          this.position = newPosition;
         }
       } else {
         throw new Error('Instruction string contains unsupported instruction.');

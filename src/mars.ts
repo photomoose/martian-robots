@@ -11,6 +11,6 @@ export class Mars {
   }
 
   public isOutOfBounds(coordinate: Coordinate) {
-    return coordinate.y > this.upperRight.y;
+    return coordinate.x < 0 || coordinate.x > this.upperRight.x || coordinate.y < 0 || coordinate.y > this.upperRight.y;
   }
 }
