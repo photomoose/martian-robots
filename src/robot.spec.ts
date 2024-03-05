@@ -1,4 +1,5 @@
 import {Robot} from './robot';
+import {Mars} from './mars';
 
 describe('Robot', () => {
   let robot: Robot;
@@ -85,4 +86,11 @@ describe('Robot', () => {
       robot.handleInstructions('X');
     }).toThrow('Instruction string contains unsupported instruction.');
   });
+
+  it('should be LOST when instructions make it fall off Mars', () => {
+    robot.setPosition('0 0 N');
+    robot.handleInstructions('FFF');
+    expect(robot.getPosition()).toBe('0 2 LOST');
+  });
 });
+
