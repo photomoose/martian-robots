@@ -5,7 +5,8 @@ describe('Robot', () => {
   let robot: Robot;
 
   beforeEach(() => {
-    robot = new Robot();
+    const mars = Mars.create({ x: 2, y: 2});
+    robot = new Robot(mars);
   });
 
   it('should return default position', () => {
@@ -90,7 +91,7 @@ describe('Robot', () => {
   it('should be LOST when instructions make it fall off Mars', () => {
     robot.setPosition('0 0 N');
     robot.handleInstructions('FFF');
-    expect(robot.getPosition()).toBe('0 2 LOST');
+    expect(robot.getPosition()).toBe('0 2 N LOST');
   });
 });
 

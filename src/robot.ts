@@ -1,9 +1,11 @@
 import {Orientation, Position} from './position';
+import {Mars} from './mars';
 
 export class Robot {
   private position: Position;
+  private isLost: boolean = false;
 
-  constructor() {
+  constructor(private mars: Mars) {
     this.position = {
       x: 0,
       y: 0,
@@ -12,7 +14,7 @@ export class Robot {
   }
 
   public getPosition() {
-    return `${this.position.x} ${this.position.y} ${this.position.orientation}`;
+    return `${this.position.x} ${this.position.y} ${this.position.orientation}${this.isLost ? ' LOST' : ''}`;
   }
 
   public setPosition(position: string) {
@@ -76,7 +78,17 @@ export class Robot {
       } else if (instruction === 'F') {
         switch (this.position.orientation) {
         case 'N':
-          this.position.y = this.position.y + 1;
+          const newPosition = {
+            ...this.position,
+            y: this.position.y + 1
+          };
+
+          if (this.mars.isOutOfBounds(newPosition)){
+            this.isLost = true;
+          } else {
+            this.position = newPosition;
+          }
+
           break;
         case 'E':
           this.position.x++;

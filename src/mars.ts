@@ -9,4 +9,8 @@ export class Mars {
 
     return new Mars(upperRight);
   }
+
+  public isOutOfBounds(coordinate: Coordinate) {
+    return coordinate.y > this.upperRight.y;
+  }
 }
