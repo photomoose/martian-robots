@@ -3,9 +3,10 @@ import {Mars} from './mars';
 
 describe('Robot', () => {
   let robot: Robot;
+  let mars: Mars;
 
   beforeEach(() => {
-    const mars = Mars.create({ x: 2, y: 2});
+    mars = Mars.create({ x: 2, y: 2});
     robot = new Robot(mars);
   });
 
@@ -103,6 +104,17 @@ describe('Robot', () => {
     robot.setPosition('2 2 N');
     robot.processInstructions('FRRF');
     expect(robot.getPosition()).toBe('2 2 N LOST');
+  });
+
+  it('should ignore instruction to fall off Mars if another robot previously fell off at the same point', () => {
+    robot.setPosition('2 2 N');
+    robot.processInstructions('F');
+
+    const robot2 = new Robot(mars);
+    robot2.setPosition('2 2 N');
+    robot2.processInstructions('F');
+
+    expect(robot2.getPosition()).toBe('2 2 N');
   });
 });
 
