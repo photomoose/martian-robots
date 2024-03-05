@@ -93,10 +93,16 @@ describe('Robot', () => {
     '2 2 E',
     '0 0 S',
     '0 0 W'
-  ])('should be LOST when instructions make it fall off Mars (%s)', (position: string) => {
+  ])('should be lost when instructions make it fall off Mars (%s)', (position: string) => {
     robot.setPosition(position);
     robot.processInstructions('F');
     expect(robot.getPosition()).toBe(`${position} LOST`);
+  });
+
+  it('should ignore further instructions after getting lost', () => {
+    robot.setPosition('2 2 N');
+    robot.processInstructions('FRRF');
+    expect(robot.getPosition()).toBe('2 2 N LOST');
   });
 });
 
