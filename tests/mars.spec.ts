@@ -1,4 +1,4 @@
-import {Mars} from './mars';
+import {Mars} from '../src/mars';
 
 describe('Mars', () => {
   it('creating Mars with x coordinate greater than 50 should throw', () => {

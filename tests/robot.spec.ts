@@ -1,13 +1,19 @@
-import {Robot} from './robot';
-import {Mars} from './mars';
+import {Robot} from '../src/robot';
+import {Mars} from '../src/mars';
+import {Instruction} from '../src/instructions/instruction';
+import {Right} from '../src/instructions/right';
+import {Left} from '../src/instructions/left';
+import {Forward} from '../src/instructions/forward';
 
 describe('Robot', () => {
   let robot: Robot;
   let mars: Mars;
+  let instructions: readonly Instruction[];
 
   beforeEach(() => {
+    instructions = [new Left(), new Right(), new Forward()];
     mars = Mars.create({ x: 2, y: 2});
-    robot = new Robot(mars);
+    robot = new Robot(mars, instructions);
   });
 
   it('should return default position', () => {
@@ -110,7 +116,7 @@ describe('Robot', () => {
     robot.setPosition('2 2 N');
     robot.processInstructions('F');
 
-    const robot2 = new Robot(mars);
+    const robot2 = new Robot(mars, instructions);
     robot2.setPosition('2 2 N');
     robot2.processInstructions('F');
 

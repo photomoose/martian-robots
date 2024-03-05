@@ -1,17 +1,19 @@
 import {Orientation, Position} from './position';
 import {Mars} from './mars';
+import {Instruction} from './instructions';
 
 export class Robot {
   private position: Position;
   private isLost: boolean = false;
 
-  constructor(private mars: Mars) {
+  constructor(private mars: Mars, private instructions: readonly Instruction[]) {
     this.position = {
       x: 0,
       y: 0,
       orientation: 'N'
     };
   }
+
 
   public getPosition() {
     return `${this.position.x} ${this.position.y} ${this.position.orientation}${this.isLost ? ' LOST' : ''}`;
@@ -39,94 +41,37 @@ export class Robot {
     };
   }
 
-  public processInstructions(instructions: string) {
-    if (instructions.length >= 100) {
+  public processInstructions(instructionString: string) {
+    if (instructionString.length >= 100) {
       throw new Error('Invalid instruction length. Instruction strings must be less than 100 characters.');
     }
 
-    for (const instruction of instructions) {
-      if (this.isLost) {
-        // Silently ignore further instructions if lost
-        return;
-      }
+    for (const instruction of instructionString) {
+      this.processSingleInstruction(instruction);
+    }
+  }
 
-      if (instruction === 'R') {
-        switch (this.position.orientation) {
-        case 'N':
-          this.position.orientation = 'E';
-          break;
-        case 'E':
-          this.position.orientation = 'S';
-          break;
-        case 'S':
-          this.position.orientation = 'W';
-          break;
-        case 'W':
-          this.position.orientation = 'N';
-          break;
-        }
-      } else if (instruction === 'L') {
-        switch (this.position.orientation) {
-        case 'N':
-          this.position.orientation = 'W';
-          break;
-        case 'E':
-          this.position.orientation = 'N';
-          break;
-        case 'S':
-          this.position.orientation = 'E';
-          break;
-        case 'W':
-          this.position.orientation = 'S';
-          break;
-        }
-      } else if (instruction === 'F') {
+  private processSingleInstruction(instructionString: string) {
+    if (this.isLost) {
+      // Silently ignore further instructions if lost
+      return;
+    }
 
-        let newPosition = {
-          ...this.position
-        };
+    const instruction = this.instructions.find((i) => i.symbol === instructionString);
 
-        switch (this.position.orientation) {
-        case 'N':
-          newPosition = {
-            ...this.position,
-            y: this.position.y + 1
-          };
-          break;
+    if (instruction) {
+      const newPosition = instruction.getNextPosition(this.position);
 
-        case 'E':
-          newPosition = {
-            ...this.position,
-            x: this.position.x + 1
-          };
-          break;
-        case 'S':
-          newPosition = {
-            ...this.position,
-            y: this.position.y - 1
-          };
-          break;
-        case 'W':
-          newPosition = {
-            ...this.position,
-            x: this.position.x - 1
-          };
-          break;
-        }
-
-        if (this.mars.isOutOfBounds(newPosition) && this.mars.hasScent(this.position)) {
-          continue;
-        }
-
-        if (this.mars.isOutOfBounds(newPosition)) {
+      if (this.mars.isOutOfBounds(newPosition)) {
+        if (!this.mars.hasScent(this.position)) {
           this.isLost = true;
           this.mars.leaveScent(this.position);
-        } else {
-          this.position = newPosition;
         }
       } else {
-        throw new Error('Instruction string contains unsupported instruction.');
+        this.position = newPosition;
       }
+    } else {
+      throw new Error('Instruction string contains unsupported instruction.');
     }
   }
 }

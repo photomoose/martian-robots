@@ -1,10 +1,16 @@
-import {Mars} from './mars';
-import {Robot} from './robot';
+import {Mars} from '../src/mars';
+import {Robot} from '../src/robot';
+import {Instruction} from '../src/instructions';
+import {Right} from '../src/instructions';
+import {Left} from '../src/instructions';
+import {Forward} from '../src/instructions';
 
 describe('Acceptance tests', () => {
   let mars: Mars;
+  let instructions: readonly Instruction[];
 
   beforeEach(() => {
+    instructions = [new Left(), new Right(), new Forward()];
     mars = Mars.create({ x: 5, y: 3 });
   });
 
@@ -12,7 +18,7 @@ describe('Acceptance tests', () => {
     let robot1: Robot;
 
     beforeEach(() => {
-      robot1 = new Robot(mars);
+      robot1 = new Robot(mars, instructions);
       robot1.setPosition('1 1 E');
       robot1.processInstructions('RFRFRFRF');
     });
@@ -25,7 +31,7 @@ describe('Acceptance tests', () => {
       let robot2: Robot;
 
       beforeEach(() => {
-        robot2 = new Robot(mars);
+        robot2 = new Robot(mars, instructions);
         robot2.setPosition('3 2 N');
         robot2.processInstructions('FRRFLLFFRRFLL');
       });
@@ -38,7 +44,7 @@ describe('Acceptance tests', () => {
         let robot3: Robot;
 
         beforeEach(() => {
-          robot3 = new Robot(mars);
+          robot3 = new Robot(mars, instructions);
           robot3.setPosition('0 3 W');
           robot3.processInstructions('LLFFFLFLFL');
         });
