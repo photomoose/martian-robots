@@ -11,7 +11,7 @@ describe('Acceptance tests', () => {
 
   beforeEach(() => {
     instructions = [new Left(), new Right(), new Forward()];
-    mars = Mars.create({ x: 5, y: 3 });
+    mars = Mars.create('5 3');
   });
 
   describe('when commands are sent to the first robot', () => {

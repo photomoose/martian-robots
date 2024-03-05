@@ -1,9 +1,9 @@
 import {Robot} from '../src/robot';
 import {Mars} from '../src/mars';
-import {Instruction} from '../src/instructions/instruction';
-import {Right} from '../src/instructions/right';
-import {Left} from '../src/instructions/left';
-import {Forward} from '../src/instructions/forward';
+import {Instruction} from '../src/instructions';
+import {Right} from '../src/instructions';
+import {Left} from '../src/instructions';
+import {Forward} from '../src/instructions';
 
 describe('Robot', () => {
   let robot: Robot;
@@ -12,7 +12,7 @@ describe('Robot', () => {
 
   beforeEach(() => {
     instructions = [new Left(), new Right(), new Forward()];
-    mars = Mars.create({ x: 2, y: 2});
+    mars = Mars.create('2 2');
     robot = new Robot(mars, instructions);
   });
 
