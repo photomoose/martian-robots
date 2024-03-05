@@ -73,4 +73,16 @@ describe('Robot', () => {
     robot.handleInstructions('RFRFRFRF');
     expect(robot.getPosition()).toBe('1 1 E');
   });
+
+  it('should throw for instruction strings having length of 100 or more characters', () => {
+    expect(() => {
+      robot.handleInstructions('R'.repeat(100));
+    }).toThrow('Invalid instruction length. Instruction strings must be less than 100 characters.');
+  });
+
+  it('should throw for unsupported instruction', () => {
+    expect(() => {
+      robot.handleInstructions('X');
+    }).toThrow('Instruction string contains unsupported instruction.');
+  });
 });

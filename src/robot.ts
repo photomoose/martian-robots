@@ -38,6 +38,10 @@ export class Robot {
   }
 
   public handleInstructions(instructions: string) {
+    if (instructions.length >= 100) {
+      throw new Error('Invalid instruction length. Instruction strings must be less than 100 characters.');
+    }
+
     for (const instruction of instructions) {
       if (instruction === 'R') {
         switch (this.position.orientation) {
@@ -84,6 +88,8 @@ export class Robot {
           this.position.x--;
           break;
         }
+      } else {
+        throw new Error('Instruction string contains unsupported instruction.');
       }
     }
   }
