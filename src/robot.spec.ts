@@ -88,10 +88,15 @@ describe('Robot', () => {
     }).toThrow('Instruction string contains unsupported instruction.');
   });
 
-  it('should be LOST when instructions make it fall off Mars', () => {
-    robot.setPosition('0 0 N');
-    robot.handleInstructions('FFF');
-    expect(robot.getPosition()).toBe('0 2 N LOST');
+  it.each([
+    '2 2 N',
+    '2 2 E',
+    '0 0 S',
+    '0 0 W'
+  ])('should be LOST when instructions make it fall off Mars (%s)', (position: string) => {
+    robot.setPosition(position);
+    robot.handleInstructions('F');
+    expect(robot.getPosition()).toBe(`${position} LOST`);
   });
 });
 
