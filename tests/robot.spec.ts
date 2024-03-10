@@ -1,23 +1,34 @@
-import {Robot} from '../src/robot';
-import {Mars} from '../src/mars';
+import {
+  createRobot,
+  getPosition,
+  OldRobot,
+  processInstruction,
+  processInstructions,
+  Robot,
+  setPosition
+} from '../src/oldRobot';
+import {OldMars} from '../src/oldMars';
 import {Instruction} from '../src/instructions';
 import {Right} from '../src/instructions';
 import {Left} from '../src/instructions';
 import {Forward} from '../src/instructions';
+import {Effect, pipe} from 'effect';
 
 describe('Robot', () => {
-  let robot: Robot;
-  let mars: Mars;
+  let newRobot: Robot;
+  let robot: OldRobot;
+  let mars: OldMars;
   let instructions: readonly Instruction[];
 
   beforeEach(() => {
     instructions = [new Left(), new Right(), new Forward()];
-    mars = Mars.create('2 2');
-    robot = new Robot(mars, instructions);
+    mars = OldMars.create('2 2');
+    robot = new OldRobot(mars, instructions);
+    newRobot = createRobot();
   });
 
   it('should return default position', () => {
-    expect(robot.getPosition()).toBe('0 0 N');
+    expect(Effect.runSync(getPosition(newRobot))).toBe('0 0 N');
   });
 
   it.each([
@@ -30,7 +41,7 @@ describe('Robot', () => {
     '50 50 X'
   ])('should throw error when setting position with invalid format (%s)', (position: string) => {
     expect(() => {
-      robot.setPosition(position);
+      Effect.runSync(setPosition(position));
     }).toThrow('Invalid position format.');
   });
 
@@ -40,8 +51,13 @@ describe('Robot', () => {
     '1 1 S',
     '1 1 W',
   ])('should return new position after being successfully set (%s)', (position: string) => {
-    robot.setPosition(position);
-    expect(robot.getPosition()).toBe(position);
+    const effect = pipe(
+      position,
+      setPosition,
+      Effect.flatMap(getPosition)
+    );
+
+    expect(Effect.runSync(effect)).toBe(position);
   });
 
   it.each([
@@ -50,9 +66,14 @@ describe('Robot', () => {
     ['1 1 S', '1 1 W'],
     ['1 1 W', '1 1 N'],
   ])('should rotate 90 degrees to the right when handling R command (%s)', (position: string, expected: string) => {
-    robot.setPosition(position);
-    robot.processInstructions('R');
-    expect(robot.getPosition()).toBe(expected);
+    const effect = pipe(
+      position,
+      setPosition,
+      Effect.flatMap(processInstruction('R')),
+      Effect.flatMap(getPosition)
+    );
+
+    expect(Effect.runSync(effect)).toBe(expected);
   });
 
   it.each([
@@ -61,9 +82,14 @@ describe('Robot', () => {
     ['1 1 S', '1 1 E'],
     ['1 1 W', '1 1 S'],
   ])('should rotate 90 degrees to the left when handling L command (%s)', (position: string, expected: string) => {
-    robot.setPosition(position);
-    robot.processInstructions('L');
-    expect(robot.getPosition()).toBe(expected);
+    const effect = pipe(
+      position,
+      setPosition,
+      Effect.flatMap(processInstruction('L')),
+      Effect.flatMap(getPosition)
+    );
+
+    expect(Effect.runSync(effect)).toBe(expected);
   });
 
   it.each([
@@ -72,15 +98,27 @@ describe('Robot', () => {
     ['1 1 S', '1 0 S'],
     ['1 1 W', '0 1 W'],
   ])('should move one grid point in the direction of orientation when handling F command (%s)', (position: string, expected: string) => {
-    robot.setPosition(position);
-    robot.processInstructions('F');
-    expect(robot.getPosition()).toBe(expected);
+    const effect = pipe(
+      position,
+      setPosition,
+      Effect.flatMap(processInstruction('F')),
+      Effect.flatMap(getPosition)
+    );
+
+    expect(Effect.runSync(effect)).toBe(expected);
   });
 
   it('should handle multiple instructions', () => {
-    robot.setPosition('1 1 E');
-    robot.processInstructions('RFRFRFRF');
-    expect(robot.getPosition()).toBe('1 1 E');
+    const effect = pipe(
+      setPosition('1 1 E'),
+      Effect.flatMap((r) => pipe(
+        r,
+        processInstructions('RFRFRFRF'),
+      )),
+      Effect.flatMap(getPosition)
+    );
+
+    expect(Effect.runSync(effect)).toBe('1 1 E');
   });
 
   it('should throw for instruction strings having length of 100 or more characters', () => {
@@ -90,8 +128,13 @@ describe('Robot', () => {
   });
 
   it('should throw for unsupported instruction', () => {
+    const effect = pipe(
+      newRobot,
+      processInstruction('X'),
+    );
+
     expect(() => {
-      robot.processInstructions('X');
+      Effect.runSync(effect);
     }).toThrow('Instruction string contains unsupported instruction.');
   });
 
@@ -116,7 +159,7 @@ describe('Robot', () => {
     robot.setPosition('2 2 N');
     robot.processInstructions('F');
 
-    const robot2 = new Robot(mars, instructions);
+    const robot2 = new OldRobot(mars, instructions);
     robot2.setPosition('2 2 N');
     robot2.processInstructions('F');
 

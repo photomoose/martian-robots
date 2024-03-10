@@ -1,6 +1,6 @@
 import prompt from 'prompt-sync';
-import {Mars} from './mars';
-import {Robot} from './robot';
+import {OldMars} from './oldMars';
+import {OldRobot} from './oldRobot';
 import {Forward, Left, Right} from './instructions';
 
 const p = prompt({
@@ -10,7 +10,7 @@ const p = prompt({
 console.log('Enter upper-right coordinates of Mars (e.g. 5 3)');
 const upperRight = p('> ');
 
-const mars = Mars.create(upperRight);
+const mars = OldMars.create(upperRight);
 
 let robotNumber = 1;
 
@@ -19,7 +19,7 @@ while (true) {
   try {
     console.log(`Enter position of Robot ${robotNumber} (e.g. 1 1 N)`);
     const position = p('> ');
-    const robot = new Robot(mars, [new Left(), new Right(), new Forward()]);
+    const robot = new OldRobot(mars, [new Left(), new Right(), new Forward()]);
     robot.setPosition(position);
 
     console.log(`Enter instructions to send to Robot ${robotNumber} (e.g. RFLF)`);
